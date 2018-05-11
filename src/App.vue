@@ -1,19 +1,42 @@
 <template>
-  <ais-index
-    app-id="latency"
-    api-key="3d9875e51fbd20c7754e65422f7ce5e1"
-    index-name="bestbuy"
-  >
-    <ais-search-box></ais-search-box>
-    <ais-results>
-      <template slot-scope="{ result }">
-        <h2>
-          <ais-highlight :result="result" attribute-name="name"></ais-highlight>
-        </h2>
-      </template>
-    </ais-results>
-  </ais-index>
+  <div>
+    <h1 v-if="flag">Split.io feature flag works!</h1>
+    <ais-index
+      app-id="latency"
+      api-key="3d9875e51fbd20c7754e65422f7ce5e1"
+      index-name="bestbuy"
+      >
+      <ais-search-box></ais-search-box>
+      <ais-results>
+        <template slot-scope="{ result }">
+          <h2>
+            <ais-highlight :result="result" attribute-name="name"></ais-highlight>
+          </h2>
+        </template>
+      </ais-results>
+    </ais-index>
+  </div>
 </template>
+
+<script>
+export default {
+  props: ["splitio"],
+  data: function() {
+    return {
+      flag: false
+    };
+  },
+  created() {
+    const searchBar = this.splitio.getTreatment("search-bar");
+    console.log("searchBar flag is: " + searchBar);
+    if (searchBar == "on") {
+      this.flag = true;
+    } else {
+      this.flag = false;
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 #app {
