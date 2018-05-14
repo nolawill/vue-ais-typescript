@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-if="flag">Split.io feature flag works!</h1>
+    <h1 v-if="splitState != 'loading'">Split.io feature flag works! treatments are: {{ splitFlags }}</h1>
     <ais-index
       app-id="latency"
       api-key="3d9875e51fbd20c7754e65422f7ce5e1"
@@ -19,21 +19,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  props: ["splitio"],
-  data: function() {
-    return {
-      flag: false
-    };
-  },
-  created() {
-    const searchBar = this.splitio.getTreatment("search-bar");
-    console.log("searchBar flag is: " + searchBar);
-    if (searchBar == "on") {
-      this.flag = true;
-    } else {
-      this.flag = false;
-    }
+  computed: {
+    ...mapGetters(["splitState", "splitFlags"])
   }
 };
 </script>
